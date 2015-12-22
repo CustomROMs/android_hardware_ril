@@ -2027,6 +2027,11 @@ static void requestSetupDataCall(void *data, size_t datalen, RIL_Token t)
             pdp_type = "IP";
         }
 
+        if (!strcmp("IPV6", pdp_type)) {
+            RLOGW("IPV6 pdp requested, but reference ril only supports IPV4, downgrading.");
+            pdp_type = "IP";
+        }
+
         asprintf(&cmd, "AT+CGDCONT=1,\"%s\",\"%s\",,0,0", pdp_type, apn);
         //FIXME check for error here
         err = at_send_command(cmd, NULL);
@@ -2453,6 +2458,10 @@ onRequest (int request, void *data, size_t datalen, RIL_Token t)
                 // It will call GET_CURRENT_CALLS and determine success that way.
                 RIL_onRequestComplete(t, RIL_E_SUCCESS, NULL, 0);
             }
+            break;
+        case RIL_REQUEST_ALLOW_DATA:
+            /* Just return success. */
+            RIL_onRequestComplete(t, RIL_E_SUCCESS, NULL, 0);
             break;
 
         case RIL_REQUEST_SEPARATE_CONNECTION:
