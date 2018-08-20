@@ -49,8 +49,10 @@ static void usage(const char *argv0) {
     exit(EXIT_FAILURE);
 }
 
+#ifdef QCOM_HARDWARE
 extern char ril_service_name_base[MAX_SERVICE_NAME_LENGTH];
-extern char ril_service_name[MAX_SERVICE_NAME_LENGTH];
+extern char ril_service_name[MAX_SERVICE_NAME_LENGTH] __attribute__((weak));
+#endif
 
 extern void RIL_register (const RIL_RadioFunctions *callbacks);
 extern void rilc_thread_pool ();
@@ -74,6 +76,7 @@ extern void RIL_onUnsolicitedResponse(int unsolResponse, const void *data,
 extern void RIL_requestTimedCallback (RIL_TimedCallback callback,
         void *param, const struct timeval *relativeTime);
 
+extern void RIL_setRilSocketName(char * s) __attribute__((weak));
 
 static struct RIL_Env s_rilEnv = {
     RIL_onRequestComplete,
@@ -142,6 +145,7 @@ int main(int argc, char **argv) {
         }
     }
 
+#ifdef QCOM_HARDWARE
     if (clientId == NULL) {
         clientId = "0";
     } else if (atoi(clientId) >= MAX_RILDS) {
@@ -152,6 +156,7 @@ int main(int argc, char **argv) {
         snprintf(ril_service_name, sizeof(ril_service_name), "%s%s", ril_service_name_base,
                  clientId);
     }
+#endif
 
     if (rilLibPath == NULL) {
         if ( 0 == property_get(LIB_PATH_PROPERTY, libPath, NULL)) {
@@ -203,9 +208,11 @@ int main(int argc, char **argv) {
         argc = make_argv(args, rilArgv);
     }
 
+#ifdef QCOM_HARDWARE
     rilArgv[argc++] = "-c";
     rilArgv[argc++] = (char*)clientId;
     RLOGD("RIL_Init argc = %d clientId = %s", argc, rilArgv[argc-1]);
+#endif
 
     // Make sure there's a reasonable argv[0]
     rilArgv[0] = argv[0];
