@@ -7418,7 +7418,7 @@ void convertRilDataCallToHal(RIL_Data_Call_Response_v6 *dcResponse,
     dcResult.ifname = convertCharPtrToHidlString(dcResponse->ifname);
     dcResult.addresses = convertCharPtrToHidlString(dcResponse->addresses);
     dcResult.dnses = convertCharPtrToHidlString(dcResponse->dnses);
-    dcResult.gateways = convertCharPtrToHidlString(dcResponse->gateways);
+    dcResult.gateways = convertCharPtrToHidlString(dcResponse->addresses);
     dcResult.pcscf = hidl_string();
     dcResult.mtu = 0;
 }
@@ -7433,7 +7433,7 @@ void convertRilDataCallToHal(RIL_Data_Call_Response_v9 *dcResponse,
     dcResult.ifname = convertCharPtrToHidlString(dcResponse->ifname);
     dcResult.addresses = convertCharPtrToHidlString(dcResponse->addresses);
     dcResult.dnses = convertCharPtrToHidlString(dcResponse->dnses);
-    dcResult.gateways = convertCharPtrToHidlString(dcResponse->gateways);
+    dcResult.gateways = convertCharPtrToHidlString(dcResponse->addresses);
     dcResult.pcscf = convertCharPtrToHidlString(dcResponse->pcscf);
     dcResult.mtu = 0;
 }
@@ -7448,7 +7448,7 @@ void convertRilDataCallToHal(RIL_Data_Call_Response_v11 *dcResponse,
     dcResult.ifname = convertCharPtrToHidlString(dcResponse->ifname);
     dcResult.addresses = convertCharPtrToHidlString(dcResponse->addresses);
     dcResult.dnses = convertCharPtrToHidlString(dcResponse->dnses);
-    dcResult.gateways = convertCharPtrToHidlString(dcResponse->gateways);
+    dcResult.gateways = convertCharPtrToHidlString(dcResponse->addresses);
     dcResult.pcscf = convertCharPtrToHidlString(dcResponse->pcscf);
     dcResult.mtu = dcResponse->mtu;
 }
